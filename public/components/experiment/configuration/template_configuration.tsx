@@ -51,6 +51,14 @@ export const TemplateConfiguration = ({
         return;
       }
 
+      // QUICK START MOCK: Skip backend call and show mock results directly
+      if (data.type === 'HYBRID_OPTIMIZER' && (data as any).isQuickStartMode) {
+        notifications.toasts.addSuccess('Quick Start optimization complete (mock)');
+        // Navigate to mock results page
+        history.push('/experiment/quick-start-mock-results');
+        return;
+      }
+
       // If we reach here, `data` is guaranteed to be valid and not null
       try {
         setIsCreating(true);

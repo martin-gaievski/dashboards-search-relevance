@@ -23,6 +23,7 @@ import { CoreStart, ToastsStart } from '../../../../../../src/core/public';
 import { ServiceEndpoints } from '../../../../common';
 import { printType, HybridOptimizerExperiment } from '../../../types/index';
 import { VariantDetailsModal } from '../metrics/variant_details';
+import { QuickStartResults } from './quick_start_results';
 import {
   NDCG_TOOL_TIP,
   PRECISION_TOOL_TIP,
@@ -411,35 +412,94 @@ export const HybridOptimizerExperimentView: React.FC<HybridOptimizerExperimentVi
     </EuiPanel>
   );
 
+  // TODO: Replace with actual detection logic based on experiment metadata
+  const isQuickStartMode = experiment?.name?.includes('quick-start') || false;
+
+  // Mock data for Quick Start results - TODO: Replace with actual data from experiment
+  const quickStartMockData = {
+    indexName: 'my-product-index',
+    numQueriesGenerated: 50,
+    numConfigsTested: 20,
+    durationMinutes: 18,
+    llmModel: 'GPT-4',
+    recommendedConfig: {
+      technique: 'Reciprocal Rank Fusion (RRF)',
+      bm25Weight: 0.35,
+      vectorWeight: 0.65,
+      normalization: 'min-max',
+      ndcg: 0.847,
+      ndcgImprovement: 12,
+      mrr: 0.782,
+      mrrImprovement: 8,
+      precision: 0.91,
+      precisionImprovement: 15,
+    },
+    generatedResources: {
+      querySetId: querySet?.id || '',
+      querySetName: querySet?.name || 'auto-generated-queries-2025-10-23-18-15',
+      judgmentId: judgmentSet?.id || '',
+      judgmentName: judgmentSet?.name || 'auto-generated-ratings-2025-10-23-18-15',
+      numRatings: 250,
+      avgRating: 3.2,
+    },
+  };
+
   return (
     <>
       {experimentDetails}
       <EuiSpacer size="m" />
-      <EuiPanel hasBorder paddingSize="l">
-        {error ? (
-          <EuiCallOut title="Error" color="danger">
-            <p>{error}</p>
-          </EuiCallOut>
-        ) : (
-          <TableListView
-            key={`table-${Object.keys(queryEvaluations).length}`}
-            entityName="Query"
-            entityNamePlural="Queries"
-            tableColumns={tableColumns}
-            findItems={findQueries}
-            loading={loading}
-            initialPageSize={50}
-            pageSizeOptions={[20, 50, 100]}
-            search={{
-              box: {
-                incremental: true,
-                placeholder: 'Query...',
-                schema: true,
-              },
-            }}
-          />
-        )}
-      </EuiPanel>
+      
+      {isQuickStartMode ? (
+        <QuickStartResults
+          {...quickStartMockData}
+          onTestConfiguration={() => {
+            notifications.toasts.addSuccess('Test configuration feature coming soon');
+          }}
+          onRunNewOptimization={() => {
+            history.push('/experiment/create');
+          }}
+          onSwitchToAdvanced={() => {
+            notifications.toasts.addInfo('Switching to Advanced mode with generated resources');
+            // TODO: Navigate to advanced mode with pre-filled data
+          }}
+          onViewQueries={() => {
+            history.push(`/query-set/view/${querySet?.id}`);
+          }}
+          onViewRatings={() => {
+            history.push(`/judgment/view/${judgmentSet?.id}`);
+          }}
+          onDeploy={() => {
+            notifications.toasts.addWarning('Deploy feature coming soon');
+          }}
+        />
+      ) : (
+        <EuiPanel hasBorder paddingSize="l">
+          {error ? (
+            <EuiCallOut title="Error" color="danger">
+              <p>{error}</p>
+            </EuiCallOut>
+          ) : (
+            <TableListView
+              key={`table-${Object.keys(queryEvaluations).length}`}
+              entityName="Query"
+              entityNamePlural="Queries"
+              tableColumns={tableColumns}
+              findItems={findQueries}
+              loading={loading}
+              initialPageSize={50}
+              pageSizeOptions={[20, 50, 100]}
+              search={{
+                box: {
+                  incremental: true,
+                  placeholder: 'Query...',
+                  schema: true,
+                },
+              }}
+            />
+          )}
+        </EuiPanel>
+      )}
+      
       {selectedVariantDetails && (
         <VariantDetailsModal
           variantDetails={selectedVariantDetails}

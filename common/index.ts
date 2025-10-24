@@ -65,6 +65,7 @@ export enum Routes {
   ExperimentCreateTemplate = `/experiment/create/:templateId(${Object.values(
     RouteTemplateType
   ).join('|')})`,
+  QuickStartMockResults = '/experiment/quick-start-mock-results',
   QuerySetListing = '/querySet',
   QuerySetView = '/querySet/view/:entityId',
   QuerySetViewPrefix = '/querySet/view',

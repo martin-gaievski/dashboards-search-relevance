@@ -41,6 +41,7 @@ import { QuerySetView } from './query_set';
 import { QuerySetCreate } from './query_set';
 import { TemplateType, routeToTemplateType } from './experiment/configuration/types';
 import { TemplateConfigurationWithRouter } from './experiment/configuration/template_configuration';
+import { QuickStartMockResultsPageWithRouter } from './experiment/views/quick_start_mock_results_page';
 
 enum Navigation {
   SRW = 'Search Relevance Workbench',
@@ -254,6 +255,15 @@ const SearchRelevancePage = ({
               const { entityId } = props.match.params;
               return (
                 <ExperimentViewWithRouter http={http} notifications={notifications} id={entityId} />
+              );
+            }}
+          />
+          <Route
+            path={Routes.QuickStartMockResults}
+            exact
+            render={() => {
+              return (
+                <QuickStartMockResultsPageWithRouter http={http} notifications={notifications} />
               );
             }}
           />
