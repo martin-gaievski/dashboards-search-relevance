@@ -10,7 +10,7 @@ export enum TemplateType {
   SingleQueryComparison = 'Single Query Comparison',
   QuerySetComparison = 'Query Set Comparison',
   SearchEvaluation = 'Search Evaluation',
-  HybridSearchOptimizer = 'Hybrid Search Optimizer',
+  HybridSearchOptimizer = 'Search Optimizer',
 }
 
 export const routeToTemplateType = (templateId: string) => {

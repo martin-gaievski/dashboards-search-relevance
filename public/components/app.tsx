@@ -50,7 +50,7 @@ enum Navigation {
   ExperimentsSingleQueryComparison = 'Single Query Comparison',
   ExperimentsQuerySetComparison = 'Query Set Comparison',
   ExperimentsSearchEvaluation = 'Search Evaluation',
-  ExperimentsHybridOptimizer = 'Hybrid Optimizer',
+  ExperimentsHybridOptimizer = 'Search Optimizer',
   QuerySets = 'Query Sets',
   SearchConfigurations = 'Search Configurations',
   Judgments = 'Judgments',

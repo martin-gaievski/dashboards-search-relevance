@@ -42,7 +42,7 @@ const TEMPLATES: Template[] = [
   },
   {
     id: TemplateType.HybridSearchOptimizer,
-    name: 'Hybrid Search Optimizer',
+    name: 'Search Optimizer',
     description: 'Find the best balance between neural and lexical hybrid search configuration.',
     isDisabled: false,
   },
