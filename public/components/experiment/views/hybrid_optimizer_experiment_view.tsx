@@ -413,10 +413,10 @@ export const HybridOptimizerExperimentView: React.FC<HybridOptimizerExperimentVi
   );
 
   // TODO: Replace with actual detection logic based on experiment metadata
-  const isQuickStartMode = experiment?.name?.includes('quick-start') || false;
+  const isAutoOptimizedMode = experiment?.name?.includes('auto-optimized') || false;
 
-  // Mock data for Quick Start results - TODO: Replace with actual data from experiment
-  const quickStartMockData = {
+  // Mock data for Auto-Optimized results - TODO: Replace with actual data from experiment
+  const autoOptimizedMockData = {
     indexName: 'my-product-index',
     numQueriesGenerated: 50,
     numConfigsTested: 20,
@@ -449,9 +449,9 @@ export const HybridOptimizerExperimentView: React.FC<HybridOptimizerExperimentVi
       {experimentDetails}
       <EuiSpacer size="m" />
       
-      {isQuickStartMode ? (
+      {isAutoOptimizedMode ? (
         <QuickStartResults
-          {...quickStartMockData}
+          {...autoOptimizedMockData}
           onTestConfiguration={() => {
             notifications.toasts.addSuccess('Test configuration feature coming soon');
           }}

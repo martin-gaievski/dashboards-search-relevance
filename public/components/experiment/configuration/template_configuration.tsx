@@ -51,11 +51,11 @@ export const TemplateConfiguration = ({
         return;
       }
 
-      // QUICK START MOCK: Skip backend call and show mock results directly
-      if (data.type === 'HYBRID_OPTIMIZER' && (data as any).isQuickStartMode) {
-        notifications.toasts.addSuccess('Quick Start optimization complete (mock)');
+      // AUTO-OPTIMIZED MOCK: Skip backend call and show mock results directly
+      if (data.type === 'HYBRID_OPTIMIZER' && (data as any).isAutoOptimizedMode) {
+        notifications.toasts.addSuccess('Auto-Optimized optimization complete (mock)');
         // Navigate to mock results page
-        history.push('/experiment/quick-start-mock-results');
+        history.push('/experiment/auto-optimized-mock-results');
         return;
       }
 

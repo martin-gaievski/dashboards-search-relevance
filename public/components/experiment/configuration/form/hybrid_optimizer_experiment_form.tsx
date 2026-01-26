@@ -54,14 +54,14 @@ export const HybridOptimizerExperimentForm = forwardRef<
   const [searchConfigError, setSearchConfigError] = useState<string[]>([]);
   const [judgmentError, setJudgmentError] = useState<string[]>([]);
 
-  // Quick Start specific state
+  // Auto-Optimized specific state
   const [selectedIndex, setSelectedIndex] = useState<OptionLabel[]>([]);
   const [selectedLLMModel, setSelectedLLMModel] = useState<OptionLabel[]>([
     { label: 'Default (GPT-4)', value: 'gpt-4' }
   ]);
   const [numTestQueries, setNumTestQueries] = useState<number>(20);
   const [ratingThreshold, setRatingThreshold] = useState<number>(3);
-  const [quickStartK, setQuickStartK] = useState<number>(10);
+  const [autoOptimizedK, setAutoOptimizedK] = useState<number>(10);
   const [indexError, setIndexError] = useState<string[]>([]);
 
   const clearAllErrors = () => {
@@ -90,8 +90,8 @@ export const HybridOptimizerExperimentForm = forwardRef<
   } => {
     let isValid = true;
 
-    // In Quick Start mode, only validate index - this is a mock, won't call backend
-    if (mode === 'quickstart') {
+    // In Auto-Optimized mode, only validate index - this is a mock, won't call backend
+    if (mode === 'auto-optimized') {
       if (!selectedIndex.length) {
         setIndexError(['Please select an index to optimize.']);
         isValid = false;
@@ -102,11 +102,11 @@ export const HybridOptimizerExperimentForm = forwardRef<
       // Return mock data - won't be used since we'll show results directly
       const mockData: HybridOptimizerExperimentFormData = {
         querySetId: 'mock-query-set',
-        size: quickStartK,
+        size: autoOptimizedK,
         searchConfigurationList: ['mock-config'],
         judgmentList: ['mock-judgment'],
         type: formData.type,
-        isQuickStartMode: true, // Flag for mock mode
+        isAutoOptimizedMode: true, // Flag for mock mode
       } as any;
 
       return { isValid, data: mockData };
@@ -205,15 +205,14 @@ export const HybridOptimizerExperimentForm = forwardRef<
     if (JSON.stringify(formData.searchConfigurationList) !== JSON.stringify(newValues)) {
       onChange('searchConfigurationList', newValues);
     }
-    // Clear error immediately on valid change (assuming exactly 1 is needed)
     if (safeSelectedOptions.length === 1 && searchConfigError.length > 0) {
       setSearchConfigError([]);
     }
   };
 
   const modeButtons = [
-    { id: 'quickstart', label: 'Quick Start' },
-    { id: 'advanced', label: 'Advanced' },
+    { id: 'quickstart', label: 'Auto-Optimized' },
+    { id: 'advanced', label: 'Manual' },
   ];
 
   return (
@@ -235,13 +234,13 @@ export const HybridOptimizerExperimentForm = forwardRef<
         <>
           <EuiFlexItem>
             <EuiCallOut
-              title="Quick Start Mode"
+              title="Auto-Optimized Mode"
               color="primary"
               iconType="iInCircle"
             >
               <EuiText size="s">
                 <p>
-                  Quick Start automatically generates test queries, ratings, and search 
+                  Auto-Optimized automatically generates test queries, ratings, and search 
                   configurations using your index data and a hosted LLM. Simply select 
                   your index to begin.
                 </p>
@@ -296,7 +295,7 @@ export const HybridOptimizerExperimentForm = forwardRef<
 
           <EuiFlexItem>
             <EuiAccordion
-              id="quickStartAdvancedOptions"
+              id="autoOptimizedAdvancedOptions"
               buttonContent={
                 <EuiText size="s">
                   <strong>⚙️ Advanced Options</strong>
@@ -338,8 +337,8 @@ export const HybridOptimizerExperimentForm = forwardRef<
                       helpText="Number of documents to include in results"
                     >
                       <EuiFieldNumber
-                        value={quickStartK}
-                        onChange={(e) => setQuickStartK(parseInt(e.target.value, 10))}
+                        value={autoOptimizedK}
+                        onChange={(e) => setAutoOptimizedK(parseInt(e.target.value, 10))}
                         min={1}
                         max={100}
                       />
